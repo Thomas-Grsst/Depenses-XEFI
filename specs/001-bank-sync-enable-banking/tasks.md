@@ -25,10 +25,10 @@ description: "Task list for 001-bank-sync-enable-banking"
 
 **Purpose**: dépendances, configuration et squelette des deux nouvelles couches
 
-- [ ] T001 Ajouter `http`, `dart_jsonwebtoken`, `flutter_secure_storage`, `url_launcher` et `app_links` dans `pubspec.yaml` (`flutter pub add …`), puis vérifier `flutter pub get`
-- [ ] T002 [P] Créer `config/enable_banking.example.json` (`ENABLE_BANKING_APP_ID: ""`, `ENABLE_BANKING_PRIVATE_KEY: ""`) et ajouter `config/enable_banking.json` à `.gitignore`
-- [ ] T003 [P] Créer les dossiers `lib/layers/technical/OpenBanking/{dto}` et `lib/layers/functional/BankSync/{domain/{entities,gateways,use_cases},data/{models,gateways},presentation/{cubit,views,widgets,l10n}}`, ainsi que les miroirs sous `test/layers/`
-- [ ] T004 [P] Déclarer l'`intent-filter` du schéma `depenses://bank-callback` dans `android/app/src/main/AndroidManifest.xml`
+- [X] T001 Ajouter `http`, `dart_jsonwebtoken`, `flutter_secure_storage`, `url_launcher` et `app_links` dans `pubspec.yaml` (`flutter pub add …`), puis vérifier `flutter pub get`
+- [X] T002 [P] Créer `config/enable_banking.example.json` (`ENABLE_BANKING_APP_ID: ""`, `ENABLE_BANKING_PRIVATE_KEY: ""`) et ajouter `config/enable_banking.json` à `.gitignore`
+- [X] T003 [P] Créer les dossiers `lib/layers/technical/OpenBanking/{dto}` et `lib/layers/functional/BankSync/{domain/{entities,gateways,use_cases},data/{models,gateways},presentation/{cubit,views,widgets,l10n}}`, ainsi que les miroirs sous `test/layers/`
+- [X] T004 [P] Déclarer l'`intent-filter` du schéma `depenses://bank-callback` dans `android/app/src/main/AndroidManifest.xml`
 
 ---
 
@@ -40,27 +40,27 @@ description: "Task list for 001-bank-sync-enable-banking"
 
 ### Tests (foundational)
 
-- [ ] T005 [P] Test de signature JWT dans `test/layers/technical/OpenBanking/enable_banking_jwt_test.dart` : en-tête `kid` = app id, `alg` RS256, claims `iss = "enablebanking.com"`, `aud = "api.enablebanking.com"`, `exp = iat + 3600`, régénération 5 minutes avant expiration (horloge `FixedClock`)
-- [ ] T006 [P] Enregistrer les fixtures JSON (aspsps, auth, sessions, balances, transactions page 1 avec `continuation_key`, page 2 finale, erreur 401) dans `test/layers/technical/OpenBanking/fixtures/`
-- [ ] T007 [P] Tests du client dans `test/layers/technical/OpenBanking/enable_banking_client_test.dart` avec `MockClient` :
+- [X] T005 [P] Test de signature JWT dans `test/layers/technical/OpenBanking/enable_banking_jwt_test.dart` : en-tête `kid` = app id, `alg` RS256, claims `iss = "enablebanking.com"`, `aud = "api.enablebanking.com"`, `exp = iat + 3600`, régénération 5 minutes avant expiration (horloge `FixedClock`)
+- [X] T006 [P] Enregistrer les fixtures JSON (aspsps, auth, sessions, balances, transactions page 1 avec `continuation_key`, page 2 finale, erreur 401) dans `test/layers/technical/OpenBanking/fixtures/`
+- [X] T007 [P] Tests du client dans `test/layers/technical/OpenBanking/enable_banking_client_test.dart` avec `MockClient` :
   - chemin, méthode et corps de chaque opération du contrat `contracts/enable-banking-client.md` ;
   - pagination `continuation_key` suivie jusqu'au bout ;
   - mapping des erreurs : 401/403 → `BankAccessExpiredException`, 429 → `BankRateLimitedException`, 5xx ou timeout de 20 s → `BankUnavailableException`, JSON invalide → `BankResponseFormatException`.
-- [ ] T008 [P] Test de compatibilité JSON dans `test/layers/functional/Expenses/data/expense_origin_compatibility_test.dart` : une dépense sans `origin` est lue comme `manual`, et une dépense `bank` fait l'aller-retour avec `bankTxId` inchangé
+- [X] T008 [P] Test de compatibilité JSON dans `test/layers/functional/Expenses/data/expense_origin_compatibility_test.dart` : une dépense sans `origin` est lue comme `manual`, et une dépense `bank` fait l'aller-retour avec `bankTxId` inchangé
 
 ### Implementation (foundational)
 
-- [ ] T009 [P] `EnableBankingConfig` (lecture `String.fromEnvironment`, `isConfigured`) dans `lib/layers/technical/OpenBanking/enable_banking_config.dart`
-- [ ] T010 [P] Exceptions nommées (`BankAccessExpiredException`, `BankRateLimitedException`, `BankUnavailableException`, `BankResponseFormatException`, `BankSyncNotConfiguredException`) dans `lib/layers/technical/OpenBanking/enable_banking_errors.dart`
-- [ ] T011 [P] DTO écrits à la main (`AspspDto`, `AuthorizationStartDto`, `SessionDto`, `BalanceDto`, `TransactionDto`, `TransactionPageDto`), un fichier chacun, dans `lib/layers/technical/OpenBanking/dto/`
-- [ ] T012 `EnableBankingJwt` (RS256, cache, rafraîchi à `exp − 5 min`) dans `lib/layers/technical/OpenBanking/enable_banking_jwt.dart` (dépend de T009)
-- [ ] T013 `EnableBankingClient` (`listBanks`, `startAuthorization`, `createSession`, `balances`, `transactions`, `deleteSession`) dans `lib/layers/technical/OpenBanking/enable_banking_client.dart` (dépend de T010 à T012)
-- [ ] T014 `registerOpenBankingDependencies` dans `lib/layers/technical/OpenBanking/open_banking_dependencies.dart` (`http.Client`, config, JWT, client, `FlutterSecureStorage`)
-- [ ] T015 Ajouter `bankAccounts('bankAccounts')`, `bankLinks('bankLinks')` et `bankDismissed('bankDismissed')` à `lib/layers/technical/Storage/ledger_section.dart`
-- [ ] T016 Étendre `Expense` avec `origin: ExpenseOrigin` (`manual` | `bank`, absent = `manual`) et `bankTransactionId: String?` dans `lib/layers/functional/Expenses/domain/entities/expense.dart`, ajouter `expense_origin.dart`, puis mapper `origin` et `bankTxId` dans `lib/layers/functional/Expenses/data/models/expense_model.dart` (rend T008 vert)
-- [ ] T017 [P] Entités BankSync `Bank`, `LinkedBankAccount` (états `linked` / `expired`), `BankTransaction` (`id`, `date`, `amount` > 0, `direction` debit/credit, `isPending`, `rawLabel`), `BankLink` (`kind`: created/matched/recurrence, `wasPending`) et `SyncReport` dans `lib/layers/functional/BankSync/domain/entities/`
-- [ ] T018 [P] Contrats `BankDirectoryGateway`, `BankAuthorizationGateway`, `BankDataGateway`, `LinkedAccountGateway` et `BankLinkGateway` (cf. contrat) dans `lib/layers/functional/BankSync/domain/gateways/`
-- [ ] T019 Squelettes `bank_sync_dependencies.dart` et `presentation/l10n/bank_sync_locale.dart` (`BankSyncLocale.fr`), branchés dans `lib/app/app_dependencies.dart` et `lib/app/app_localization.dart`, et dans `test/support/test_dependencies.dart` avec un `MockClient`
+- [X] T009 [P] `EnableBankingConfig` (lecture `String.fromEnvironment`, `isConfigured`) dans `lib/layers/technical/OpenBanking/enable_banking_config.dart`
+- [X] T010 [P] Exceptions nommées (`BankAccessExpiredException`, `BankRateLimitedException`, `BankUnavailableException`, `BankResponseFormatException`, `BankSyncNotConfiguredException`) dans `lib/layers/technical/OpenBanking/enable_banking_errors.dart`
+- [X] T011 [P] DTO écrits à la main (`AspspDto`, `AuthorizationStartDto`, `SessionDto`, `BalanceDto`, `TransactionDto`, `TransactionPageDto`), un fichier chacun, dans `lib/layers/technical/OpenBanking/dto/`
+- [X] T012 `EnableBankingJwt` (RS256, cache, rafraîchi à `exp − 5 min`) dans `lib/layers/technical/OpenBanking/enable_banking_jwt.dart` (dépend de T009)
+- [X] T013 `EnableBankingClient` (`listBanks`, `startAuthorization`, `createSession`, `balances`, `transactions`, `deleteSession`) dans `lib/layers/technical/OpenBanking/enable_banking_client.dart` (dépend de T010 à T012)
+- [X] T014 `registerOpenBankingDependencies` dans `lib/layers/technical/OpenBanking/open_banking_dependencies.dart` (`http.Client`, config, JWT, client, `FlutterSecureStorage`)
+- [X] T015 Ajouter `bankAccounts('bankAccounts')`, `bankLinks('bankLinks')` et `bankDismissed('bankDismissed')` à `lib/layers/technical/Storage/ledger_section.dart`
+- [X] T016 Étendre `Expense` avec `origin: ExpenseOrigin` (`manual` | `bank`, absent = `manual`) et `bankTransactionId: String?` dans `lib/layers/functional/Expenses/domain/entities/expense.dart`, ajouter `expense_origin.dart`, puis mapper `origin` et `bankTxId` dans `lib/layers/functional/Expenses/data/models/expense_model.dart` (rend T008 vert)
+- [X] T017 [P] Entités BankSync `Bank`, `LinkedBankAccount` (états `linked` / `expired`), `BankTransaction` (`id`, `date`, `amount` > 0, `direction` debit/credit, `isPending`, `rawLabel`), `BankLink` (`kind`: created/matched/recurrence, `wasPending`) et `SyncReport` dans `lib/layers/functional/BankSync/domain/entities/`
+- [X] T018 [P] Contrats `BankDirectoryGateway`, `BankAuthorizationGateway`, `BankDataGateway`, `LinkedAccountGateway` et `BankLinkGateway` (cf. contrat) dans `lib/layers/functional/BankSync/domain/gateways/`
+- [X] T019 Squelettes `bank_sync_dependencies.dart` et `presentation/l10n/bank_sync_locale.dart` (`BankSyncLocale.fr`), branchés dans `lib/app/app_dependencies.dart` et `lib/app/app_localization.dart`, et dans `test/support/test_dependencies.dart` avec un `MockClient`
 
 **Checkpoint**: `flutter analyze` propre, T005 à T008 verts. Les parcours peuvent démarrer.
 

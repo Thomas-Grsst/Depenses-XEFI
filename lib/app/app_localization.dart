@@ -1,4 +1,6 @@
 import 'package:depenses/layers/functional/Account/presentation/l10n/account_locale.dart';
+import 'package:depenses/layers/functional/BankSync/presentation/l10n/bank_import_locale.dart';
+import 'package:depenses/layers/functional/BankSync/presentation/l10n/bank_sync_locale.dart';
 import 'package:depenses/layers/functional/Budget/presentation/l10n/budget_locale.dart';
 import 'package:depenses/layers/functional/Categories/presentation/l10n/categories_locale.dart';
 import 'package:depenses/layers/functional/Expenses/presentation/l10n/expenses_locale.dart';
@@ -24,6 +26,8 @@ const Map<String, dynamic> frenchTranslations = {
   ...AppLocale.fr,
   ...HomeLocale.fr,
   ...AccountLocale.fr,
+  ...BankSyncLocale.fr,
+  ...BankImportLocale.fr,
   ...BudgetLocale.fr,
   ...CategoriesLocale.fr,
   ...ExpensesLocale.fr,

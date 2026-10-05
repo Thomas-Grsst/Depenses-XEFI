@@ -1,0 +1,1 @@
+{"transactions": [{"transaction_id": "tx-3", "transaction_amount": {"amount": 19.99, "currency": "EUR"}, "credit_debit_indicator": "DBIT", "status": "PDNG", "transaction_date": "2026-10-04", "remittance_information": ["PRLV SEPA FREE MOBILE"]}]}

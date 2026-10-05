@@ -7,7 +7,11 @@ enum LedgerSection {
   goals('goals'),
   scenarios('sims'),
   labels('labels'),
-  categories('cats');
+  categories('cats'),
+  bankAccounts('bankAccounts'),
+  bankLinks('bankLinks'),
+  bankDismissed('bankDismissed'),
+  bankSettings('bankSettings');
 
   const LedgerSection(this.key);
 

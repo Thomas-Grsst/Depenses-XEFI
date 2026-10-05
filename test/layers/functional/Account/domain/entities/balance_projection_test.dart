@@ -39,7 +39,7 @@ void main() {
   });
 
   test('without an entered balance the balance is zero', () {
-    final projection = const BalanceProjection(AccountSettings(income: 2000), []);
+    const projection = BalanceProjection(AccountSettings(income: 2000), []);
 
     expect(projection.balanceAt(DateTime(2026, 10, 31)), 0);
   });

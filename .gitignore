@@ -53,3 +53,6 @@ app.*.map.json
 # Local tooling
 .claude/launch.json
 .claude/settings.local.json
+
+# Enable Banking credentials
+config/enable_banking.json

@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import 'expense_origin.dart';
+
 class Expense extends Equatable {
   const Expense({
     required this.id,
@@ -10,6 +12,8 @@ class Expense extends Equatable {
     this.labels = const [],
     this.recurrenceId,
     this.roundUp = 0,
+    this.origin = ExpenseOrigin.manual,
+    this.bankTransactionId,
   });
 
   final String id;
@@ -20,8 +24,12 @@ class Expense extends Equatable {
   final List<String> labels;
   final String? recurrenceId;
   final double roundUp;
+  final ExpenseOrigin origin;
+  final String? bankTransactionId;
 
   bool get isRecurring => recurrenceId != null;
+
+  bool get isImported => origin == ExpenseOrigin.bank;
 
   double get debited => amount + roundUp;
 
@@ -33,6 +41,8 @@ class Expense extends Equatable {
     List<String>? labels,
     String? Function()? recurrenceId,
     double? roundUp,
+    ExpenseOrigin? origin,
+    String? Function()? bankTransactionId,
   }) => Expense(
     id: id,
     name: name ?? this.name,
@@ -42,8 +52,21 @@ class Expense extends Equatable {
     labels: labels ?? this.labels,
     recurrenceId: recurrenceId == null ? this.recurrenceId : recurrenceId(),
     roundUp: roundUp ?? this.roundUp,
+    origin: origin ?? this.origin,
+    bankTransactionId: bankTransactionId == null ? this.bankTransactionId : bankTransactionId(),
   );
 
   @override
-  List<Object?> get props => [id, name, amount, date, categoryKey, labels, recurrenceId, roundUp];
+  List<Object?> get props => [
+    id,
+    name,
+    amount,
+    date,
+    categoryKey,
+    labels,
+    recurrenceId,
+    roundUp,
+    origin,
+    bankTransactionId,
+  ];
 }

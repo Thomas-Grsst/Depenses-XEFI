@@ -1,0 +1,1 @@
+{"session_id": "session-1", "accounts": [{"uid": "account-1", "account_id": {"iban": "FR7630001007941234567890185"}, "name": "Compte courant", "currency": "EUR"}], "aspsp": {"name": "Banque de Test", "country": "FR"}, "access": {"valid_until": "2027-01-03T12:00:00+00:00"}}
