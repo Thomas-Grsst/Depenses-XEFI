@@ -58,6 +58,11 @@ class ProfileSettingsSection extends StatelessWidget {
             onTap: () => openRoute<void>(context, AppRoute.account),
           ),
           AppSettingRow(
+            context.tr(ProfileLocale.bank),
+            chevron: true,
+            onTap: () => openRoute<void>(context, AppRoute.bankSync),
+          ),
+          AppSettingRow(
             context.tr(ProfileLocale.budget),
             chevron: true,
             onTap: () => openRoute<void>(context, AppRoute.budget),

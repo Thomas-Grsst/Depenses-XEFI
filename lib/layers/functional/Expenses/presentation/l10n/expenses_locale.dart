@@ -64,6 +64,7 @@ mixin ExpensesLocale {
   static const deleteExpenseMessage = 'expenses.deleteExpenseMessage';
   static const deleteRecurrenceTitle = 'expenses.deleteRecurrenceTitle';
   static const deleteRecurrenceMessage = 'expenses.deleteRecurrenceMessage';
+  static const imported = 'expenses.imported';
 
   static const Map<String, dynamic> fr = {
     title: 'Dépenses',
@@ -132,5 +133,6 @@ mixin ExpensesLocale {
     deleteRecurrenceTitle: 'Supprimer cette récurrence ?',
     deleteRecurrenceMessage:
         'Les prochaines échéances ne seront plus créées. Les dépenses déjà passées restent dans l’historique.',
+    imported: 'Importée',
   };
 }

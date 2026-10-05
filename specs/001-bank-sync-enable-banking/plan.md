@@ -19,7 +19,7 @@ Côté technique :
 
 **Primary Dependencies**:
 - existantes : flutter_bloc, get_it, flutter_localization, intl, equatable, shared_preferences ;
-- nouvelles : `http`, `dart_jsonwebtoken` (signature RS256), `flutter_secure_storage` (session), `url_launcher` (ouvrir la banque), `app_links` (lien profond Android).
+- nouvelles : `http`, `dart_jsonwebtoken` (signature RS256), `url_launcher` (ouvrir la banque), `app_links` (lien profond Android).
 
 **Storage**:
 - ledger JSON `depenses_state_v1`, avec les nouvelles sections additives `bankAccounts`, `bankLinks`, `bankDismissed` et les champs additifs `origin` et `bankTxId` sur les dépenses ;

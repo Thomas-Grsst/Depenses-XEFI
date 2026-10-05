@@ -16,6 +16,7 @@ mixin ProfileLocale {
   static const settings = 'profile.settings';
   static const account = 'profile.account';
   static const toDefine = 'profile.toDefine';
+  static const bank = 'profile.bank';
   static const budget = 'profile.budget';
   static const simulations = 'profile.simulations';
   static const categories = 'profile.categories';
@@ -73,6 +74,7 @@ mixin ProfileLocale {
     settings: 'Réglages',
     account: 'Compte & salaire',
     toDefine: 'À définir',
+    bank: 'Ma banque',
     budget: 'Budget & enveloppes',
     simulations: 'Mes simulations',
     categories: 'Catégories',

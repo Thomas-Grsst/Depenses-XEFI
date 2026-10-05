@@ -1,0 +1,45 @@
+{
+  "transactions": [
+    {
+      "entry_reference": "oct-carrefour",
+      "transaction_amount": {"amount": "42.30", "currency": "EUR"},
+      "credit_debit_indicator": "DBIT",
+      "status": "BOOK",
+      "booking_date": "2026-10-03",
+      "remittance_information": ["CB CARREFOUR 03/10 PARIS 12"]
+    },
+    {
+      "entry_reference": "oct-free",
+      "transaction_amount": {"amount": "19.99", "currency": "EUR"},
+      "credit_debit_indicator": "DBIT",
+      "status": "BOOK",
+      "booking_date": "2026-10-05",
+      "remittance_information": ["PRLV SEPA FREE MOBILE"]
+    },
+    {
+      "transaction_id": "oct-sncf",
+      "transaction_amount": {"amount": -25.0, "currency": "EUR"},
+      "credit_debit_indicator": "DBIT",
+      "status": "BOOK",
+      "value_date": "2026-10-08",
+      "creditor": {"name": "SNCF"},
+      "remittance_information": ["CARTE X4821 08/10 SNCF INTERNET"]
+    },
+    {
+      "entry_reference": "oct-salary",
+      "transaction_amount": {"amount": "2400.00", "currency": "EUR"},
+      "credit_debit_indicator": "CRDT",
+      "status": "BOOK",
+      "booking_date": "2026-10-01",
+      "remittance_information": ["VIR SEPA SALAIRE OCTOBRE"],
+      "debtor": {"name": "EMPLOYEUR SA"}
+    },
+    {
+      "transaction_amount": {"amount": "4.50", "currency": "EUR"},
+      "credit_debit_indicator": "DBIT",
+      "status": "PDNG",
+      "transaction_date": "2026-10-14",
+      "remittance_information": ["CB BOULANGERIE DU COIN 14/10"]
+    }
+  ]
+}

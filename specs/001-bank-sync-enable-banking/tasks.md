@@ -25,7 +25,7 @@ description: "Task list for 001-bank-sync-enable-banking"
 
 **Purpose**: dépendances, configuration et squelette des deux nouvelles couches
 
-- [X] T001 Ajouter `http`, `dart_jsonwebtoken`, `flutter_secure_storage`, `url_launcher` et `app_links` dans `pubspec.yaml` (`flutter pub add …`), puis vérifier `flutter pub get`
+- [X] T001 Ajouter `http`, `dart_jsonwebtoken`, `url_launcher` et `app_links` dans `pubspec.yaml` (`flutter pub add …`), puis vérifier `flutter pub get`
 - [X] T002 [P] Créer `config/enable_banking.example.json` (`ENABLE_BANKING_APP_ID: ""`, `ENABLE_BANKING_PRIVATE_KEY: ""`) et ajouter `config/enable_banking.json` à `.gitignore`
 - [X] T003 [P] Créer les dossiers `lib/layers/technical/OpenBanking/{dto}` et `lib/layers/functional/BankSync/{domain/{entities,gateways,use_cases},data/{models,gateways},presentation/{cubit,views,widgets,l10n}}`, ainsi que les miroirs sous `test/layers/`
 - [X] T004 [P] Déclarer l'`intent-filter` du schéma `depenses://bank-callback` dans `android/app/src/main/AndroidManifest.xml`
@@ -74,20 +74,20 @@ description: "Task list for 001-bank-sync-enable-banking"
 
 ### Tests for User Story 1
 
-- [ ] T020 [P] [US1] Tests de `StartBankAuthorizationUseCase` (state UUID mémorisé, `valid_until` = maintenant + validité maximale de la banque) et de `CompleteBankAuthorizationUseCase` (state différent → `BankAuthorizationRejectedException`, comptes enregistrés, session dans le stockage sécurisé) dans `test/layers/functional/BankSync/domain/use_cases/bank_authorization_use_cases_test.dart`
-- [ ] T021 [P] [US1] Test d'`UnlinkBankAccountUseCase` (session révoquée, compte retiré, dépenses intactes) dans `test/layers/functional/BankSync/domain/use_cases/unlink_bank_account_use_case_test.dart`
-- [ ] T022 [P] [US1] Tests de `BankSyncCubit` (comptes, statut expiré) et de `BankCallbackCubit` (succès, annulation, state invalide) avec bloc_test dans `test/layers/functional/BankSync/presentation/cubit/`
+- [X] T020 [P] [US1] Tests de `StartBankAuthorizationUseCase` (state UUID mémorisé, `valid_until` = maintenant + validité maximale de la banque) et de `CompleteBankAuthorizationUseCase` (state différent → `BankAuthorizationRejectedException`, comptes enregistrés, session dans le stockage sécurisé) dans `test/layers/functional/BankSync/domain/use_cases/bank_authorization_use_cases_test.dart`
+- [X] T021 [P] [US1] Test d'`UnlinkBankAccountUseCase` (session révoquée, compte retiré, dépenses intactes) dans `test/layers/functional/BankSync/domain/use_cases/unlink_bank_account_use_case_test.dart`
+- [X] T022 [P] [US1] Tests de `BankSyncCubit` (comptes, statut expiré) et de `BankCallbackCubit` (succès, annulation, state invalide) avec bloc_test dans `test/layers/functional/BankSync/presentation/cubit/`
 
 ### Implementation for User Story 1
 
-- [ ] T023 [P] [US1] `LinkedBankAccountModel` et `LinkedAccountGatewayImpl` (section `bankAccounts`, session via `FlutterSecureStorage` sous la clé `bank_session_<uid>`) dans `lib/layers/functional/BankSync/data/`
-- [ ] T024 [P] [US1] `BankDirectoryGatewayImpl` et `BankAuthorizationGatewayImpl` sur `EnableBankingClient` dans `lib/layers/functional/BankSync/data/gateways/`
-- [ ] T025 [US1] Use cases `GetBanksUseCase`, `StartBankAuthorizationUseCase`, `CompleteBankAuthorizationUseCase`, `UnlinkBankAccountUseCase` et `GetLinkedAccountsUseCase` dans `lib/layers/functional/BankSync/domain/use_cases/` (rend T020 et T021 verts)
-- [ ] T026 [US1] `AuthorizationCallbackListener` : boucle locale `http://localhost:8765/bank-callback` sur Windows, `app_links` sur Android, route sur le web, plus le parseur « coller l'adresse de retour » ; dans `lib/layers/technical/OpenBanking/authorization_callback_listener.dart`
-- [ ] T027 [US1] Cubits `BankSyncCubit`, `BankPickerCubit` et `BankCallbackCubit` avec leurs states dans `lib/layers/functional/BankSync/presentation/cubit/` (rend T022 vert)
-- [ ] T028 [US1] Vues `BankSyncPage`, `BankPickerPage` et `BankCallbackPage`, plus les widgets `BankAccountTile`, `BankLinkPrompt` et `BankNotConfiguredNotice`, dans `lib/layers/functional/BankSync/presentation/` (textes dans `BankSyncLocale`, `App*` widgets)
-- [ ] T029 [US1] Routes `AppRoute.bankSync` (`/bank`), `bankPicker` (`/bank/pick`) et `bankCallback` (`/bank-callback`) dans `lib/layers/technical/Navigation/app_route.dart` et `lib/app/app_router.dart`
-- [ ] T030 [US1] Ligne « Ma banque » (`openRoute(AppRoute.bankSync)`) dans la vue Profil, sous `lib/layers/functional/Profile/presentation/`
+- [X] T023 [P] [US1] `LinkedBankAccountModel` et `LinkedAccountGatewayImpl` (section `bankAccounts`, session via `FlutterSecureStorage` sous la clé `bank_session_<uid>`) dans `lib/layers/functional/BankSync/data/`
+- [X] T024 [P] [US1] `BankDirectoryGatewayImpl` et `BankAuthorizationGatewayImpl` sur `EnableBankingClient` dans `lib/layers/functional/BankSync/data/gateways/`
+- [X] T025 [US1] Use cases `GetBanksUseCase`, `StartBankAuthorizationUseCase`, `CompleteBankAuthorizationUseCase`, `UnlinkBankAccountUseCase` et `GetLinkedAccountsUseCase` dans `lib/layers/functional/BankSync/domain/use_cases/` (rend T020 et T021 verts)
+- [X] T026 [US1] `AuthorizationCallbackListener` : boucle locale `http://localhost:8765/bank-callback` sur Windows, `app_links` sur Android, route sur le web, plus le parseur « coller l'adresse de retour » ; dans `lib/layers/technical/OpenBanking/authorization_callback_listener.dart`
+- [X] T027 [US1] Cubits `BankSyncCubit`, `BankPickerCubit` et `BankCallbackCubit` avec leurs states dans `lib/layers/functional/BankSync/presentation/cubit/` (rend T022 vert)
+- [X] T028 [US1] Vues `BankSyncPage`, `BankPickerPage` et `BankCallbackPage`, plus les widgets `BankAccountTile`, `BankLinkPrompt` et `BankNotConfiguredNotice`, dans `lib/layers/functional/BankSync/presentation/` (textes dans `BankSyncLocale`, `App*` widgets)
+- [X] T029 [US1] Routes `AppRoute.bankSync` (`/bank`), `bankPicker` (`/bank/pick`) et `bankCallback` (`/bank-callback`) dans `lib/layers/technical/Navigation/app_route.dart` et `lib/app/app_router.dart`
+- [X] T030 [US1] Ligne « Ma banque » (`openRoute(AppRoute.bankSync)`) dans la vue Profil, sous `lib/layers/functional/Profile/presentation/`
 
 **Checkpoint**: US1 démontrable seule (scénario 1 et 8 du quickstart).
 
@@ -101,22 +101,22 @@ description: "Task list for 001-bank-sync-enable-banking"
 
 ### Tests for User Story 2
 
-- [ ] T031 [P] [US2] Tests du nettoyage des libellés (`CB CARREFOUR 03/10 PARIS 12` → `Carrefour`, `PRLV SEPA FREE MOBILE` → `Free Mobile`, casse de titre) dans `test/layers/functional/BankSync/domain/entities/bank_label_cleaner_test.dart`
-- [ ] T032 [P] [US2] Tests de `ReconcileBankTransactionUseCase` sur les cas R8 : déjà liée (mise à jour seulement si `wasPending`), écartée, dépense manuelle même montant ±3 jours → `matched`, nouvelle → `created` avec `roundUp == 0`, crédit ignoré ; dans `test/layers/functional/BankSync/domain/use_cases/reconcile_bank_transaction_use_case_test.dart`
-- [ ] T033 [P] [US2] Tests de `SynchronizeBankAccountsUseCase` : fenêtre de 90 jours au premier passage et `lastSync − 10 j` ensuite, 10 passages successifs → 0 doublon (SC-002), opération en attente disparue → dépense retirée, `SyncReport` exact ; dans `test/layers/functional/BankSync/domain/use_cases/synchronize_bank_accounts_use_case_test.dart`
-- [ ] T034 [P] [US2] Test de `DismissImportedExpenseUseCase` et de l'appel de `ExpenseDeletionListener` à la suppression, dans `test/layers/functional/BankSync/domain/use_cases/dismiss_imported_expense_use_case_test.dart`
+- [X] T031 [P] [US2] Tests du nettoyage des libellés (`CB CARREFOUR 03/10 PARIS 12` → `Carrefour`, `PRLV SEPA FREE MOBILE` → `Free Mobile`, casse de titre) dans `test/layers/functional/BankSync/domain/entities/bank_label_cleaner_test.dart`
+- [X] T032 [P] [US2] Tests de `ReconcileBankTransactionUseCase` sur les cas R8 : déjà liée (mise à jour seulement si `wasPending`), écartée, dépense manuelle même montant ±3 jours → `matched`, nouvelle → `created` avec `roundUp == 0`, crédit ignoré ; dans `test/layers/functional/BankSync/domain/use_cases/reconcile_bank_transaction_use_case_test.dart`
+- [X] T033 [P] [US2] Tests de `SynchronizeBankAccountsUseCase` : fenêtre de 90 jours au premier passage et `lastSync − 10 j` ensuite, 10 passages successifs → 0 doublon (SC-002), opération en attente disparue → dépense retirée, `SyncReport` exact ; dans `test/layers/functional/BankSync/domain/use_cases/synchronize_bank_accounts_use_case_test.dart`
+- [X] T034 [P] [US2] Test de `DismissImportedExpenseUseCase` et de l'appel de `ExpenseDeletionListener` à la suppression, dans `test/layers/functional/BankSync/domain/use_cases/dismiss_imported_expense_use_case_test.dart`
 
 ### Implementation for User Story 2
 
-- [ ] T035 [P] [US2] `BankLabelCleaner` dans `lib/layers/functional/BankSync/domain/entities/bank_label_cleaner.dart` (rend T031 vert)
-- [ ] T036 [P] [US2] `BankTransactionMapper` (DTO → entité : identifiant = `entry_reference`, sinon `transaction_id`, sinon empreinte `date|montant|libellé normalisé` ; date = `booking_date`, sinon `value_date`, sinon `transaction_date`) et `BankDataGatewayImpl` dans `lib/layers/functional/BankSync/data/`
-- [ ] T037 [P] [US2] `BankLinkModel` et `BankLinkGatewayImpl` (sections `bankLinks` et `bankDismissed`) dans `lib/layers/functional/BankSync/data/`
-- [ ] T038 [US2] `ReconcileBankTransactionUseCase` (utilise `GuessCategoryUseCase` et `ExpenseGateway`) dans `lib/layers/functional/BankSync/domain/use_cases/` (rend T032 vert)
-- [ ] T039 [US2] `SynchronizeBankAccountsUseCase` et `ShouldSynchronizeUseCase` (dernière synchronisation de plus d'une heure) dans `lib/layers/functional/BankSync/domain/use_cases/` (rend T033 vert, `BankAccessExpiredException` → compte `expired`)
-- [ ] T040 [US2] Contrat `ExpenseDeletionListener` dans `lib/layers/functional/Expenses/domain/gateways/`, appelé par `DeleteExpenseUseCase` et `DeleteExpenseEntryUseCase` ; implémenté par `DismissImportedExpenseUseCase` (BankSync) et injecté dans `lib/app/app_dependencies.dart` (rend T034 vert)
-- [ ] T041 [US2] Bouton « Synchroniser maintenant » et toast `SyncReport` (« N dépenses ajoutées, M rapprochées » / « Déjà à jour ») dans `BankSyncCubit` et `BankSyncPage`
-- [ ] T042 [US2] Synchronisation à l'ouverture : `AppSessionCubit.resume()` appelle `SynchronizeBankAccountsUseCase` quand `ShouldSynchronizeUseCase` est vrai, et ignore les erreurs, dans `lib/app/session/app_session_cubit.dart`
-- [ ] T043 [P] [US2] Badge « importée » dans `ExpenseRow` et dans l'éditeur, basé sur `expense.origin`, dans `lib/layers/functional/Expenses/presentation/widgets/` (FR-015, clé `ExpensesLocale.imported`)
+- [X] T035 [P] [US2] `BankLabelCleaner` dans `lib/layers/functional/BankSync/domain/entities/bank_label_cleaner.dart` (rend T031 vert)
+- [X] T036 [P] [US2] `BankTransactionMapper` (DTO → entité : identifiant = `entry_reference`, sinon `transaction_id`, sinon empreinte `date|montant|libellé normalisé` ; date = `booking_date`, sinon `value_date`, sinon `transaction_date`) et `BankDataGatewayImpl` dans `lib/layers/functional/BankSync/data/`
+- [X] T037 [P] [US2] `BankLinkModel` et `BankLinkGatewayImpl` (sections `bankLinks` et `bankDismissed`) dans `lib/layers/functional/BankSync/data/`
+- [X] T038 [US2] `ReconcileBankTransactionUseCase` (utilise `GuessCategoryUseCase` et `ExpenseGateway`) dans `lib/layers/functional/BankSync/domain/use_cases/` (rend T032 vert)
+- [X] T039 [US2] `SynchronizeBankAccountsUseCase` et `ShouldSynchronizeUseCase` (dernière synchronisation de plus d'une heure) dans `lib/layers/functional/BankSync/domain/use_cases/` (rend T033 vert, `BankAccessExpiredException` → compte `expired`)
+- [X] T040 [US2] Contrat `ExpenseDeletionListener` dans `lib/layers/functional/Expenses/domain/gateways/`, appelé par `DeleteExpenseUseCase` et `DeleteExpenseEntryUseCase` ; implémenté par `DismissImportedExpenseUseCase` (BankSync) et injecté dans `lib/app/app_dependencies.dart` (rend T034 vert)
+- [X] T041 [US2] Bouton « Synchroniser maintenant » et toast `SyncReport` (« N dépenses ajoutées, M rapprochées » / « Déjà à jour ») dans `BankSyncCubit` et `BankSyncPage`
+- [X] T042 [US2] Synchronisation à l'ouverture : `AppSessionCubit.resume()` appelle `SynchronizeBankAccountsUseCase` quand `ShouldSynchronizeUseCase` est vrai, et ignore les erreurs, dans `lib/app/session/app_session_cubit.dart`
+- [X] T043 [P] [US2] Badge « importée » dans `ExpenseRow` et dans l'éditeur, basé sur `expense.origin`, dans `lib/layers/functional/Expenses/presentation/widgets/` (FR-015, clé `ExpensesLocale.imported`)
 
 **Checkpoint**: US1 et US2 forment le MVP (scénarios 2 à 5 du quickstart).
 

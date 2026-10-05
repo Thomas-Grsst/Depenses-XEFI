@@ -10,6 +10,7 @@ import 'expense_category_grid.dart';
 import 'expense_editor_fields.dart';
 import 'expense_editor_header.dart';
 import 'expense_frequency_block.dart';
+import 'expense_imported_tag.dart';
 import 'expense_labels_block.dart';
 import 'expense_look_preview.dart';
 import 'expense_mode_switch.dart';
@@ -28,6 +29,7 @@ class ExpenseEditorForm extends StatelessWidget {
           padding: EdgeInsets.fromLTRB(tokens.pad, 8, tokens.pad, 24),
           children: spaced([
             ExpenseEditorHeader(state: state),
+            if (state.target.expense?.isImported ?? false) const Center(child: ExpenseImportedTag()),
             if (!state.isEditing) ExpenseModeSwitch(isRecurring: state.isRecurring),
             ExpenseAmountField(state: state),
             Column(

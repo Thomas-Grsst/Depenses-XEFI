@@ -1,5 +1,5 @@
 import 'package:depenses/layers/technical/Storage/secret_store.dart';
-import 'package:depenses/layers/technical/Storage/secure_secret_store.dart';
+import 'package:depenses/layers/technical/Storage/preferences_secret_store.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,7 +16,7 @@ void registerOpenBankingDependencies(
   getIt
     ..registerLazySingleton<EnableBankingConfig>(() => config ?? EnableBankingConfig.fromEnvironment())
     ..registerLazySingleton<http.Client>(() => transport ?? http.Client(), dispose: (client) => client.close())
-    ..registerLazySingleton<SecretStore>(() => secrets ?? const SecureSecretStore())
+    ..registerLazySingleton<SecretStore>(() => secrets ?? PreferencesSecretStore())
     ..registerLazySingleton(() => EnableBankingJwt(getIt(), DateTime.now))
     ..registerLazySingleton(() => EnableBankingClient(getIt(), getIt(), getIt()));
 }

@@ -1,7 +1,6 @@
 import 'package:depenses/layers/technical/Localization/formatting_context.dart';
 import 'package:depenses/layers/technical/Navigation/push_page.dart';
 import 'package:depenses/layers/technical/Theme/app_item_row.dart';
-import 'package:depenses/layers/technical/Theme/app_mark_icon.dart';
 import 'package:depenses/layers/technical/Theme/app_tokens_context.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +9,7 @@ import '../views/expense_editor_page.dart';
 import 'expense_badge.dart';
 import 'expense_label_chips.dart';
 import 'expense_rounded_amount.dart';
+import 'expense_row_marks.dart';
 
 class ExpenseRow extends StatelessWidget {
   const ExpenseRow(this.item, {super.key, this.meta, this.iconSize = 40, this.showsLabelChips = false});
@@ -28,7 +28,7 @@ class ExpenseRow extends StatelessWidget {
     return AppItemRow(
       leading: ExpenseBadge(category: item.category, look: item.look, size: isGraphite ? 38 : iconSize),
       title: expense.name,
-      titleSuffix: expense.isRecurring ? const AppMarkIcon('repeat') : null,
+      titleSuffix: expense.isRecurring || expense.isImported ? ExpenseRowMarks(expense: expense) : null,
       subtitle: meta ?? _subtitle(isGraphite),
       below: hasChips ? ExpenseLabelChips(labels: expense.labels) : null,
       trailing: isRoundedUp ? null : context.money.euros(expense.amount),

@@ -1,4 +1,7 @@
 import 'package:depenses/layers/functional/Account/presentation/views/account_page.dart';
+import 'package:depenses/layers/functional/BankSync/presentation/views/bank_callback_page.dart';
+import 'package:depenses/layers/functional/BankSync/presentation/views/bank_picker_page.dart';
+import 'package:depenses/layers/functional/BankSync/presentation/views/bank_sync_page.dart';
 import 'package:depenses/layers/functional/Budget/presentation/views/budget_envelope_route_sheet.dart';
 import 'package:depenses/layers/functional/Budget/presentation/views/budget_page.dart';
 import 'package:depenses/layers/functional/Categories/domain/entities/category.dart';
@@ -15,6 +18,7 @@ import 'package:depenses/layers/functional/Simulations/presentation/views/simula
 import 'package:depenses/layers/functional/Simulations/presentation/views/simulations_page.dart';
 import 'package:depenses/layers/technical/Navigation/app_route.dart';
 import 'package:depenses/layers/technical/Theme/app_tokens.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 const _graphiteBarrier = Color(0xB3000000);
@@ -41,12 +45,21 @@ class AppRouter {
       AppRoute.roundUp => _page(settings, const SavingsPage()),
       AppRoute.simulations => _page(settings, const SimulationsPage()),
       AppRoute.simulation => _page(settings, SimulationPage(scenario: arguments as Scenario?)),
+      AppRoute.bankSync => _page(settings, const BankSyncPage()),
+      AppRoute.bankPicker => _page(settings, BankPickerPage(initialQuery: arguments as String? ?? '')),
+      AppRoute.bankCallback => _page(settings, BankCallbackPage(callback: _bankCallback(settings))),
       AppRoute.categories => _sheet(settings, const CategoriesSheet()),
       AppRoute.newCategory => _sheet(settings, const CategoryEditorSheet()),
       AppRoute.editCategory => _sheet(settings, CategoryEditorSheet(category: arguments! as Category)),
       AppRoute.editEnvelope => _sheet(settings, BudgetEnvelopeRouteSheet(categoryKey: arguments! as String)),
     };
   }
+
+  Uri _bankCallback(RouteSettings settings) => switch (settings.arguments) {
+    final Uri callback => callback,
+    _ when kIsWeb => Uri.base,
+    _ => Uri.parse(settings.name ?? ''),
+  };
 
   Route<dynamic> _page(RouteSettings settings, Widget page) =>
       MaterialPageRoute<dynamic>(settings: settings, builder: (_) => page);

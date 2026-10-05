@@ -3,6 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'data/gateways/expense_gateway_impl.dart';
 import 'data/gateways/label_gateway_impl.dart';
 import 'data/gateways/round_up_setting_gateway_impl.dart';
+import 'data/gateways/silent_expense_deletion_listener.dart';
+import 'domain/gateways/expense_deletion_listener.dart';
 import 'domain/gateways/expense_gateway.dart';
 import 'domain/gateways/label_gateway.dart';
 import 'domain/gateways/round_up_setting_gateway.dart';
@@ -37,7 +39,14 @@ void registerExpensesDependencies(GetIt getIt) {
     ..registerLazySingleton<RoundUpSettingGateway>(() => RoundUpSettingGatewayImpl(getIt()))
     ..registerLazySingleton(() => AddExpenseUseCase(getIt(), getIt(), getIt(), getIt()))
     ..registerLazySingleton(() => UpdateExpenseUseCase(getIt(), getIt(), getIt()))
-    ..registerLazySingleton(() => DeleteExpenseUseCase(getIt()))
+    ..registerLazySingleton(
+      () => DeleteExpenseUseCase(
+        getIt(),
+        getIt.isRegistered<ExpenseDeletionListener>()
+            ? getIt<ExpenseDeletionListener>()
+            : const SilentExpenseDeletionListener(),
+      ),
+    )
     ..registerLazySingleton(() => GetAllExpensesUseCase(getIt()))
     ..registerLazySingleton(() => GetMonthExpensesUseCase(getIt()))
     ..registerLazySingleton(() => GetRecentExpensesUseCase(getIt()))

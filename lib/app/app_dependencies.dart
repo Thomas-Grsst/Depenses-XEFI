@@ -1,8 +1,10 @@
 import 'package:depenses/layers/functional/Account/account_dependencies.dart';
 import 'package:depenses/layers/functional/Appearance/appearance_dependencies.dart';
 import 'package:depenses/layers/functional/BankSync/bank_sync_dependencies.dart';
+import 'package:depenses/layers/functional/BankSync/domain/use_cases/dismiss_imported_expense_use_case.dart';
 import 'package:depenses/layers/functional/Budget/budget_dependencies.dart';
 import 'package:depenses/layers/functional/Categories/categories_dependencies.dart';
+import 'package:depenses/layers/functional/Expenses/domain/gateways/expense_deletion_listener.dart';
 import 'package:depenses/layers/functional/Expenses/expenses_dependencies.dart';
 import 'package:depenses/layers/functional/Forecast/forecast_dependencies.dart';
 import 'package:depenses/layers/functional/Onboarding/onboarding_dependencies.dart';
@@ -27,7 +29,8 @@ Future<void> registerAppDependencies(GetIt getIt) async {
   registerFunctionalDependencies(getIt);
   registerHomeDependencies(getIt);
   getIt
-    ..registerFactory(() => AppSessionCubit(getIt(), getIt(), getIt()))
+    ..registerLazySingleton<ExpenseDeletionListener>(() => getIt<DismissImportedExpenseUseCase>())
+    ..registerFactory(() => AppSessionCubit(getIt(), getIt(), getIt(), getIt(), getIt()))
     ..registerFactory(ShellTabCubit.new);
 }
 

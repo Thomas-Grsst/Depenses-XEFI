@@ -27,7 +27,7 @@
   - `ENABLE_BANKING_PRIVATE_KEY` contient la clé PEM, avec les sauts de ligne encodés en `\n`.
   - Sans configuration, la fonctionnalité est masquée (« Synchronisation bancaire non configurée »).
 - **Pourquoi** : ça respecte FR-017 et la constitution (« credentials never committed »), sans écran de saisie de clé.
-- **Données de session** (`session_id`, `uid` des comptes) : elles sont stockées avec `flutter_secure_storage`, parce qu'elles donnent accès aux opérations. Les métadonnées non sensibles (nom de la banque, dates) vont dans le ledger JSON.
+- **Données de session** (`session_id`) : elles passent par le contrat `SecretStore`, implémenté par `PreferencesSecretStore` (`shared_preferences`, clés préfixées `depenses_secret_`). `flutter_secure_storage` a été écarté parce que son plugin Windows exige le composant ATL de Visual Studio. C'est acceptable pour un usage personnel, et remplaçable sans toucher au domaine. Les métadonnées (nom de la banque, dates) vont dans le ledger JSON.
 
 ## R4. Retour d'autorisation (redirect_url)
 
