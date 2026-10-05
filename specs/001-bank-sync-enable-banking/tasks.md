@@ -165,10 +165,10 @@ description: "Task list for 001-bank-sync-enable-banking"
 
 ## Phase 7: Polish & Cross-Cutting Concerns
 
-- [ ] T053 [P] Mettre à jour `README.md` (synchronisation bancaire, `--dart-define-from-file`) et la section Commands de `CLAUDE.md`
-- [ ] T054 Exécuter tout `quickstart.md` sur Windows avec un vrai compte, puis remplacer les fixtures par des réponses réelles anonymisées si des champs diffèrent (R5)
-- [ ] T055 Vérifier la couverture du diff (≥ 80 %) avec `flutter test --coverage`, en ne comptant que les lignes modifiées
-- [ ] T056 `flutter analyze` et `dart format -l 120 lib test` propres, aucun commentaire, aucun fichier de plus de 200 lignes dans les couches `OpenBanking` et `BankSync`
+- [X] T053 [P] Mettre à jour `README.md` (synchronisation bancaire, `--dart-define-from-file`) et la section Commands de `CLAUDE.md`
+- [ ] T054 Exécuter tout `quickstart.md` sur Windows avec un vrai compte, puis remplacer les fixtures par des réponses réelles anonymisées si des champs diffèrent (R5) — partiel (Sandbox, 2026-10-05) : liste des banques, autorisation Mock ASPSP (retour via « coller l'adresse »), synchronisation OK ; à refaire avec des transactions sur les comptes reliés et en Production
+- [X] T055 Vérifier la couverture du diff (≥ 80 %) avec `flutter test --coverage`, en ne comptant que les lignes modifiées
+- [X] T056 `flutter analyze` et `dart format -l 120 lib test` propres, aucun commentaire, aucun fichier de plus de 200 lignes dans les couches `OpenBanking` et `BankSync`
 
 ---
 

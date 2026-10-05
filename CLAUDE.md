@@ -9,9 +9,11 @@ flutter pub get
 flutter analyze
 dart format -l 120 lib test
 flutter test
-flutter run -d windows
+flutter run -d windows --dart-define-from-file=config/enable_banking.json
 flutter build apk --release
 ```
+
+Bank sync needs `config/enable_banking.json`, which is gitignored (see the README). Without it, the feature shows a "not configured" notice.
 
 ## Layout
 
