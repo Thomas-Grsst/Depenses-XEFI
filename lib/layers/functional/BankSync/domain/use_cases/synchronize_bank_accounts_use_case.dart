@@ -1,4 +1,5 @@
 import 'package:depenses/layers/functional/Expenses/domain/gateways/expense_gateway.dart';
+import 'package:depenses/layers/functional/Recurrences/domain/gateways/recurrence_gateway.dart';
 import 'package:depenses/layers/technical/Calendar/clock.dart';
 import 'package:depenses/layers/technical/OpenBanking/enable_banking_errors.dart';
 
@@ -20,6 +21,7 @@ class SynchronizeBankAccountsUseCase {
     this._bankData,
     this._links,
     this._expenses,
+    this._recurrences,
     this._reconcile,
     this._clock, {
     this._now = DateTime.now,
@@ -29,6 +31,7 @@ class SynchronizeBankAccountsUseCase {
   final BankDataGateway _bankData;
   final BankLinkGateway _links;
   final ExpenseGateway _expenses;
+  final RecurrenceGateway _recurrences;
   final ReconcileBankTransactionUseCase _reconcile;
   final Clock _clock;
   final DateTime Function() _now;
@@ -53,7 +56,12 @@ class SynchronizeBankAccountsUseCase {
     final from = _windowStart(account);
     final transactions = await _bankData.transactions(account, from);
     final balance = await _bankData.balance(account);
-    final batch = BankImportBatch(expenses: _expenses.all(), links: _links.all(), dismissed: _links.dismissed());
+    final batch = BankImportBatch(
+      expenses: _expenses.all(),
+      links: _links.all(),
+      dismissed: _links.dismissed(),
+      recurrences: _recurrences.all(),
+    );
     final outcomes = [
       for (final transaction in transactions) _reconcile(transaction, accountUid: account.uid, batch: batch),
     ];
@@ -93,6 +101,9 @@ class SynchronizeBankAccountsUseCase {
       await _expenses.delete(id);
     }
     await _links.saveAll(batch.links);
+    for (final recurrence in batch.changedRecurrences) {
+      await _recurrences.update(recurrence);
+    }
   }
 
   static int _count(List<ReconcileOutcome> outcomes, ReconcileOutcome outcome) =>

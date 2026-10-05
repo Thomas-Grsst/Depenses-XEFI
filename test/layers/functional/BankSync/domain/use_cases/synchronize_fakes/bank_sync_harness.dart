@@ -39,6 +39,7 @@ class BankSyncHarness {
       dependencies.get(),
       dependencies.get(),
       dependencies.get(),
+      dependencies.get(),
       dependencies.clock,
       now: () => now,
     );

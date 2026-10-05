@@ -47,6 +47,8 @@ mixin BankSyncLocale {
   static const cancelled = 'bankSync.cancelled';
   static const rejected = 'bankSync.rejected';
   static const backToBank = 'bankSync.backToBank';
+  static const bankBalance = 'bankSync.bankBalance';
+  static const useBankBalance = 'bankSync.useBankBalance';
 
   static const Map<String, dynamic> fr = {
     title: 'Ma banque',
@@ -99,5 +101,7 @@ mixin BankSyncLocale {
     cancelled: 'La liaison a été annulée. Aucun compte n’a été relié.',
     rejected: 'Cette autorisation ne correspond pas à ta demande. Recommence la liaison.',
     backToBank: 'Retour à Ma banque',
+    bankBalance: 'Solde bancaire : %a',
+    useBankBalance: 'Utiliser ce solde',
   };
 }

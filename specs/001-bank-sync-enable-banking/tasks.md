@@ -130,13 +130,13 @@ description: "Task list for 001-bank-sync-enable-banking"
 
 ### Tests for User Story 3
 
-- [ ] T044 [P] [US3] Tests du cas `recurrence` de `ReconcileBankTransactionUseCase` : montant ±3 %, date ±5 jours, nom proche → l'échéance générée est remplacée et garde `recurrenceId` ; hors tolérance → `created` ; dans `test/layers/functional/BankSync/domain/use_cases/reconcile_recurrence_test.dart`
-- [ ] T045 [P] [US3] Test : une opération importée répétée chaque mois est proposée par `DetectRecurringExpensesUseCase`, dans `test/layers/functional/BankSync/domain/use_cases/imported_expense_detection_test.dart`
+- [X] T044 [P] [US3] Tests du cas `recurrence` de `ReconcileBankTransactionUseCase` : montant ±3 %, date ±5 jours, nom proche → l'échéance générée est remplacée et garde `recurrenceId` ; hors tolérance → `created` ; dans `test/layers/functional/BankSync/domain/use_cases/reconcile_recurrence_test.dart`
+- [X] T045 [P] [US3] Test : une opération importée répétée chaque mois est proposée par `DetectRecurringExpensesUseCase`, dans `test/layers/functional/BankSync/domain/use_cases/imported_expense_detection_test.dart`
 
 ### Implementation for User Story 3
 
-- [ ] T046 [US3] Étape « récurrence » (avant le rapprochement manuel) dans `lib/layers/functional/BankSync/domain/use_cases/reconcile_bank_transaction_use_case.dart`, avec `RecurrenceGateway` et le critère « nom proche » (`normalizeForMatching`, premier mot commun ou inclusion) (rend T044 vert)
-- [ ] T047 [US3] Vérifier que `DetectRecurringExpensesUseCase` traite les dépenses `origin == bank` comme les autres et corriger si besoin, dans `lib/layers/functional/Recurrences/domain/use_cases/detect_recurring_expenses_use_case.dart` (rend T045 vert)
+- [X] T046 [US3] Étape « récurrence » (avant le rapprochement manuel) dans `lib/layers/functional/BankSync/domain/use_cases/reconcile_bank_transaction_use_case.dart`, avec `RecurrenceGateway` et le critère « nom proche » (`normalizeForMatching`, premier mot commun ou inclusion) (rend T044 vert)
+- [X] T047 [US3] Vérifier que `DetectRecurringExpensesUseCase` traite les dépenses `origin == bank` comme les autres et corriger si besoin, dans `lib/layers/functional/Recurrences/domain/use_cases/detect_recurring_expenses_use_case.dart` (rend T045 vert)
 
 **Checkpoint**: scénario 6 du quickstart.
 
@@ -150,14 +150,14 @@ description: "Task list for 001-bank-sync-enable-banking"
 
 ### Tests for User Story 4
 
-- [ ] T048 [P] [US4] Tests du choix de solde (`ITAV` > `CLAV` > `ITBD` > `CLBD`) dans `test/layers/functional/BankSync/data/bank_balance_selection_test.dart`
-- [ ] T049 [P] [US4] Tests d'`AlignBalanceOnBankUseCase` (appelle `SetBalanceUseCase` avec le solde bancaire ; écart ≤ 1 € → rien n'est proposé) dans `test/layers/functional/BankSync/domain/use_cases/align_balance_on_bank_use_case_test.dart`
+- [X] T048 [P] [US4] Tests du choix de solde (`ITAV` > `CLAV` > `ITBD` > `CLBD`) dans `test/layers/functional/BankSync/data/bank_balance_selection_test.dart`
+- [X] T049 [P] [US4] Tests d'`AlignBalanceOnBankUseCase` (appelle `SetBalanceUseCase` avec le solde bancaire ; écart ≤ 1 € → rien n'est proposé) dans `test/layers/functional/BankSync/domain/use_cases/align_balance_on_bank_use_case_test.dart`
 
 ### Implementation for User Story 4
 
-- [ ] T050 [US4] Lecture du solde dans `BankDataGatewayImpl.balance` et mémorisation dans `LinkedBankAccount.lastBankBalance` pendant la synchronisation (rend T048 vert)
-- [ ] T051 [US4] `GetBalanceGapUseCase` et `AlignBalanceOnBankUseCase` dans `lib/layers/functional/BankSync/domain/use_cases/` (rend T049 vert)
-- [ ] T052 [US4] Widget public `BankBalanceBanner` (« Solde bancaire : X — Utiliser ce solde ») avec son `BankBalanceCubit` dans `lib/layers/functional/BankSync/presentation/`, assemblé sous `AccountBalanceCard` dans `lib/app/home/home_view.dart`
+- [X] T050 [US4] Lecture du solde dans `BankDataGatewayImpl.balance` et mémorisation dans `LinkedBankAccount.lastBankBalance` pendant la synchronisation (rend T048 vert)
+- [X] T051 [US4] `GetBalanceGapUseCase` et `AlignBalanceOnBankUseCase` dans `lib/layers/functional/BankSync/domain/use_cases/` (rend T049 vert)
+- [X] T052 [US4] Widget public `BankBalanceBanner` (« Solde bancaire : X — Utiliser ce solde ») avec son `BankBalanceCubit` dans `lib/layers/functional/BankSync/presentation/`, assemblé sous `AccountBalanceCard` dans `lib/app/home/home_view.dart`
 
 **Checkpoint**: scénario 7 du quickstart. Les quatre parcours fonctionnent.
 

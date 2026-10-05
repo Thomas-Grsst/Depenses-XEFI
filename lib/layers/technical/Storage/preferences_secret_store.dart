@@ -5,7 +5,8 @@ import 'secret_store.dart';
 const _keyPrefix = 'depenses_secret_';
 
 class PreferencesSecretStore implements SecretStore {
-  PreferencesSecretStore([SharedPreferencesAsync? preferences]) : _preferences = preferences ?? SharedPreferencesAsync();
+  PreferencesSecretStore([SharedPreferencesAsync? preferences])
+    : _preferences = preferences ?? SharedPreferencesAsync();
 
   final SharedPreferencesAsync _preferences;
 

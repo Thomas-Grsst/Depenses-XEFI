@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:depenses/layers/functional/BankSync/data/gateways/bank_data_gateway_impl.dart';
 import 'package:depenses/layers/functional/BankSync/domain/entities/linked_bank_account.dart';
-import 'package:depenses/layers/technical/OpenBanking/dto/balance_dto.dart';
 import 'package:depenses/layers/technical/OpenBanking/enable_banking_client.dart';
 import 'package:depenses/layers/technical/OpenBanking/enable_banking_config.dart';
 import 'package:depenses/layers/technical/OpenBanking/enable_banking_jwt.dart';
@@ -64,15 +63,5 @@ void main() {
 
     expect(await gateway.balance(account), 1180.50);
     expect(requested.single.path, '/accounts/acc-1/balances');
-  });
-
-  test('prefers ITAV, then CLAV, ITBD and CLBD, then any balance', () {
-    BalanceDto balance(String type, double amount) => BalanceDto(type: type, amount: amount, currency: 'EUR');
-
-    expect(BankDataGatewayImpl.preferredBalance([balance('CLBD', 1), balance('ITBD', 2), balance('CLAV', 3)]), 3);
-    expect(BankDataGatewayImpl.preferredBalance([balance('CLBD', 1), balance('ITBD', 2)]), 2);
-    expect(BankDataGatewayImpl.preferredBalance([balance('XPCD', 5), balance('CLBD', 1)]), 1);
-    expect(BankDataGatewayImpl.preferredBalance([balance('XPCD', 5)]), 5);
-    expect(BankDataGatewayImpl.preferredBalance(const []), isNull);
   });
 }

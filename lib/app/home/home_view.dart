@@ -1,5 +1,7 @@
 import 'package:depenses/layers/functional/Account/presentation/cubit/account_summary_cubit.dart';
 import 'package:depenses/layers/functional/Account/presentation/widgets/account_balance_card.dart';
+import 'package:depenses/layers/functional/BankSync/presentation/cubit/bank_balance_cubit.dart';
+import 'package:depenses/layers/functional/BankSync/presentation/widgets/bank_balance_banner.dart';
 import 'package:depenses/layers/functional/Forecast/presentation/cubit/forecast_summary_cubit.dart';
 import 'package:depenses/layers/functional/Forecast/presentation/widgets/forecast_alert_callout.dart';
 import 'package:depenses/layers/functional/Forecast/presentation/widgets/forecast_budget_meter.dart';
@@ -25,6 +27,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     final forecast = context.watch<ForecastSummaryCubit>().state;
     final account = context.watch<AccountSummaryCubit>().state;
+    final isBankBalanceWorthAligning = context.watch<BankBalanceCubit>().state.isWorthAligning;
     final summary = forecast.summary;
     if (summary == null) return const SizedBox.shrink();
     final stats = summary.stats;
@@ -41,6 +44,7 @@ class HomeView extends StatelessWidget {
       children: [
         HomeHeader(forecast: forecast),
         AccountBalanceCard(summary: account.summary, today: account.today ?? stats.today),
+        if (isBankBalanceWorthAligning) const BankBalanceBanner(),
         if (isGraphite) ...[
           ForecastSpentSummary(stats: stats, isAccountHero: isAccountHero),
           ForecastBudgetMeter(stats: stats, isAccountHero: isAccountHero),

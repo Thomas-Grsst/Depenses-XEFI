@@ -1,3 +1,4 @@
+import 'package:depenses/layers/functional/BankSync/domain/entities/balance_gap.dart';
 import 'package:depenses/layers/functional/BankSync/domain/entities/bank.dart';
 import 'package:depenses/layers/functional/BankSync/domain/entities/sync_report.dart';
 import 'package:depenses/layers/functional/BankSync/domain/use_cases/complete_bank_authorization_use_case.dart';
@@ -7,6 +8,7 @@ import 'package:depenses/layers/functional/BankSync/domain/use_cases/is_bank_syn
 import 'package:depenses/layers/functional/BankSync/domain/use_cases/search_banks_use_case.dart';
 import 'package:depenses/layers/functional/BankSync/domain/use_cases/start_bank_authorization_use_case.dart';
 import 'package:depenses/layers/functional/BankSync/domain/use_cases/unlink_bank_account_use_case.dart';
+import 'package:depenses/layers/functional/BankSync/presentation/cubit/bank_balance_cubit.dart';
 import 'package:depenses/layers/functional/BankSync/presentation/cubit/bank_callback_cubit.dart';
 import 'package:depenses/layers/functional/BankSync/presentation/cubit/bank_picker_cubit.dart';
 import 'package:depenses/layers/functional/BankSync/presentation/cubit/bank_sync_cubit.dart';
@@ -19,6 +21,7 @@ import 'package:get_it/get_it.dart';
 
 import '../../../../../support/fixed_clock.dart';
 import '../../../../../support/in_memory_document_store.dart';
+import '../../support/bank_balance_fakes.dart';
 import '../../support/bank_link_fakes.dart';
 import 'bank_sync_test_app.dart';
 
@@ -28,6 +31,7 @@ void main() {
   late FakeBankAuthorizationGateway authorization;
   late FakeAuthorizationStateGateway pendingState;
   late FakeSynchronizeBankAccounts synchronize;
+  late FakeGetBalanceGap gaps;
   late InMemoryDocumentStore changes;
   final clock = FixedClock(DateTime(2026, 10, 5));
 
@@ -41,7 +45,9 @@ void main() {
     pendingState = FakeAuthorizationStateGateway();
     synchronize = FakeSynchronizeBankAccounts(report: const SyncReport(created: 3, matched: 1));
     changes = InMemoryDocumentStore();
+    gaps = FakeGetBalanceGap();
     GetIt.I
+      ..registerFactory(() => BankBalanceCubit(gaps, FakeAlignBalanceOnBank(gaps), changes))
       ..registerFactory(
         () => BankSyncCubit(
           IsBankSyncAvailableUseCase(directory),
@@ -107,8 +113,9 @@ void main() {
       expect(find.text('Synchroniser maintenant'), findsOneWidget);
     });
 
-    testWidgets('synchronizing shows the report in ${style.name}', (tester) async {
+    testWidgets('synchronizing shows the report and the bank balance offer in ${style.name}', (tester) async {
       accounts.accounts.add(linkedAccount(lastSyncedAt: DateTime(2026, 10, 4)));
+      gaps.gap = const BalanceGap(bankBalance: 1180.50, appBalance: 1237);
       await open(tester, style);
 
       await tester.tap(find.text('Synchroniser maintenant'));
@@ -118,6 +125,7 @@ void main() {
       expect(tester.takeException(), isNull);
       expect(find.text('3 dépenses ajoutées, 1 dépense rapprochée'), findsOneWidget);
       expect(find.text('Dernière synchro : 4 octobre 2026'), findsOneWidget);
+      expect(find.text('Utiliser ce solde'), findsOneWidget);
     });
   }
 

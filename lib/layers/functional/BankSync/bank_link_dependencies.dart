@@ -12,13 +12,16 @@ import 'domain/gateways/authorization_state_gateway.dart';
 import 'domain/gateways/bank_authorization_gateway.dart';
 import 'domain/gateways/bank_directory_gateway.dart';
 import 'domain/gateways/linked_account_gateway.dart';
+import 'domain/use_cases/align_balance_on_bank_use_case.dart';
 import 'domain/use_cases/complete_bank_authorization_use_case.dart';
+import 'domain/use_cases/get_balance_gap_use_case.dart';
 import 'domain/use_cases/get_banks_use_case.dart';
 import 'domain/use_cases/get_linked_accounts_use_case.dart';
 import 'domain/use_cases/is_bank_sync_available_use_case.dart';
 import 'domain/use_cases/search_banks_use_case.dart';
 import 'domain/use_cases/start_bank_authorization_use_case.dart';
 import 'domain/use_cases/unlink_bank_account_use_case.dart';
+import 'presentation/cubit/bank_balance_cubit.dart';
 import 'presentation/cubit/bank_callback_cubit.dart';
 import 'presentation/cubit/bank_picker_cubit.dart';
 import 'presentation/cubit/bank_sync_cubit.dart';
@@ -40,7 +43,10 @@ void registerBankLinkDependencies(GetIt getIt) {
     ..registerLazySingleton(() => CompleteBankAuthorizationUseCase(getIt(), getIt(), getIt()))
     ..registerLazySingleton(() => UnlinkBankAccountUseCase(getIt(), getIt()))
     ..registerLazySingleton(() => GetLinkedAccountsUseCase(getIt(), getIt()))
+    ..registerLazySingleton(() => GetBalanceGapUseCase(getIt(), getIt(), getIt()))
+    ..registerLazySingleton(() => AlignBalanceOnBankUseCase(getIt(), getIt()))
     ..registerFactory(() => BankSyncCubit(getIt(), getIt(), getIt(), getIt(), getIt()))
     ..registerFactory(() => BankPickerCubit(getIt(), getIt(), getIt(), getIt()))
-    ..registerFactory(() => BankCallbackCubit(getIt()));
+    ..registerFactory(() => BankCallbackCubit(getIt()))
+    ..registerFactory(() => BankBalanceCubit(getIt(), getIt(), getIt()));
 }

@@ -6,11 +6,13 @@ import 'package:depenses/layers/technical/Theme/show_app_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../cubit/bank_balance_cubit.dart';
 import '../cubit/bank_sync_cubit.dart';
 import '../cubit/bank_sync_failure.dart';
 import '../cubit/bank_sync_state.dart';
 import '../l10n/bank_sync_locale.dart';
 import '../l10n/bank_sync_messages.dart';
+import '../widgets/bank_balance_banner.dart';
 import '../widgets/bank_link_prompt.dart';
 import '../widgets/bank_linked_accounts.dart';
 import '../widgets/bank_not_configured_notice.dart';
@@ -24,6 +26,7 @@ class BankSyncView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isBankBalanceWorthAligning = context.watch<BankBalanceCubit>().state.isWorthAligning;
     return Scaffold(
       backgroundColor: context.tokens.bg,
       body: BlocConsumer<BankSyncCubit, BankSyncState>(
@@ -36,6 +39,7 @@ class BankSyncView extends StatelessWidget {
               const BankNotConfiguredNotice()
             else ...[
               if (state.failure != BankSyncFailure.none) BankSyncFailureNotice(failure: state.failure),
+              if (state.hasAccounts && isBankBalanceWorthAligning) const BankBalanceBanner(),
               if (state.hasAccounts) BankLinkedAccounts(state: state) else const BankLinkPrompt(),
             ],
           ],

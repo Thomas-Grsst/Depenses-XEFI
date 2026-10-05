@@ -1,4 +1,5 @@
 import 'package:depenses/layers/functional/Account/presentation/cubit/account_summary_cubit.dart';
+import 'package:depenses/layers/functional/BankSync/presentation/cubit/bank_balance_cubit.dart';
 import 'package:depenses/layers/functional/Forecast/presentation/cubit/forecast_summary_cubit.dart';
 import 'package:depenses/layers/functional/Savings/presentation/cubit/savings_summary_cubit.dart';
 import 'package:flutter/widgets.dart';
@@ -16,6 +17,7 @@ class HomePage extends StatelessWidget {
     providers: [
       BlocProvider(create: (_) => GetIt.I<ForecastSummaryCubit>()),
       BlocProvider(create: (_) => GetIt.I<AccountSummaryCubit>()),
+      BlocProvider(create: (_) => GetIt.I<BankBalanceCubit>()),
       BlocProvider(create: (_) => GetIt.I<SavingsSummaryCubit>()),
       BlocProvider(create: (_) => GetIt.I<HomeListsCubit>()),
     ],

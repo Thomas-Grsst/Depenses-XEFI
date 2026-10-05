@@ -1,5 +1,6 @@
 import 'package:depenses/layers/functional/Expenses/domain/entities/expense.dart';
 import 'package:depenses/layers/functional/Expenses/domain/entities/expense_origin.dart';
+import 'package:depenses/layers/functional/Recurrences/domain/entities/recurrence.dart';
 
 import 'bank_link.dart';
 import 'bank_transaction.dart';
@@ -12,13 +13,17 @@ class BankImportBatch {
     required Iterable<Expense> expenses,
     required Iterable<BankLink> links,
     required Iterable<String> dismissed,
+    Iterable<Recurrence> recurrences = const [],
   }) : _expenses = {for (final expense in expenses) expense.id: expense},
        _links = {for (final link in links) link.transactionId: link},
-       _dismissed = dismissed.toSet();
+       _dismissed = dismissed.toSet(),
+       _recurrences = {for (final recurrence in recurrences) recurrence.id: recurrence};
 
   final Map<String, Expense> _expenses;
   final Map<String, BankLink> _links;
   final Set<String> _dismissed;
+  final Map<String, Recurrence> _recurrences;
+  final Map<String, Recurrence> _changedRecurrences = {};
   final Map<String, Expense> _created = {};
   final Map<String, Expense> _changed = {};
   final Set<String> _removed = {};
@@ -32,7 +37,23 @@ class BankImportBatch {
 
   List<BankLink> get links => List.unmodifiable(_links.values);
 
-  bool get hasChanges => _hasLinkChanges || _created.isNotEmpty || _changed.isNotEmpty || _removed.isNotEmpty;
+  List<Recurrence> get recurrences => List.unmodifiable(_recurrences.values);
+
+  List<Recurrence> get changedRecurrences => List.unmodifiable(_changedRecurrences.values);
+
+  bool get hasChanges =>
+      _hasLinkChanges ||
+      _created.isNotEmpty ||
+      _changed.isNotEmpty ||
+      _removed.isNotEmpty ||
+      _changedRecurrences.isNotEmpty;
+
+  Iterable<Expense> get unlinkedExpenses {
+    final linkedExpenseIds = {for (final link in _links.values) link.expenseId};
+    return _expenses.values.where(
+      (expense) => expense.bankTransactionId == null && !linkedExpenseIds.contains(expense.id),
+    );
+  }
 
   BankLink? linkOf(String transactionId) => _links[transactionId];
 
@@ -41,15 +62,11 @@ class BankImportBatch {
   bool isDismissed(String transactionId) => _dismissed.contains(transactionId);
 
   Expense? manualMatchFor(BankTransaction transaction) {
-    final linkedExpenseIds = {for (final link in _links.values) link.expenseId};
     Expense? closest;
     var closestGap = _matchingDays + 1;
-    for (final expense in _expenses.values) {
-      final isFree =
-          expense.origin == ExpenseOrigin.manual &&
-          expense.bankTransactionId == null &&
-          !linkedExpenseIds.contains(expense.id);
-      if (!isFree || (expense.amount - transaction.amount).abs() > _amountTolerance) continue;
+    for (final expense in unlinkedExpenses) {
+      final isManual = expense.origin == ExpenseOrigin.manual;
+      if (!isManual || (expense.amount - transaction.amount).abs() > _amountTolerance) continue;
       final gap = _daysBetween(expense.date, transaction.date);
       if (gap < closestGap) {
         closest = expense;
@@ -64,6 +81,11 @@ class BankImportBatch {
     if (_expenses.containsKey(expense.id)) return _change(expense);
     _expenses[expense.id] = expense;
     _created[expense.id] = expense;
+  }
+
+  void recordRecurrence(Recurrence recurrence) {
+    _recurrences[recurrence.id] = recurrence;
+    _changedRecurrences[recurrence.id] = recurrence;
   }
 
   void relink(BankLink link) {

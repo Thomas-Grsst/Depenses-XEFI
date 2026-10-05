@@ -14,7 +14,9 @@ void registerBankImportDependencies(GetIt getIt) {
     ..registerLazySingleton<BankDataGateway>(() => BankDataGatewayImpl(getIt()))
     ..registerLazySingleton<BankLinkGateway>(() => BankLinkGatewayImpl(getIt()))
     ..registerLazySingleton(() => ReconcileBankTransactionUseCase(getIt(), getIt()))
-    ..registerLazySingleton(() => SynchronizeBankAccountsUseCase(getIt(), getIt(), getIt(), getIt(), getIt(), getIt()))
+    ..registerLazySingleton(
+      () => SynchronizeBankAccountsUseCase(getIt(), getIt(), getIt(), getIt(), getIt(), getIt(), getIt()),
+    )
     ..registerLazySingleton(() => ShouldSynchronizeUseCase(getIt(), getIt()))
     ..registerLazySingleton(() => DismissImportedExpenseUseCase(getIt()));
 }
