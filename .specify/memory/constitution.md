@@ -19,7 +19,7 @@ No comments, TODOs or ticket references in the code: names carry the meaning. Co
 
 ## Product constraints
 
-- Data stays on the device. The whole ledger is one JSON document in `shared_preferences` under the key `depenses_state_v1`. Its format is a compatibility contract with installed versions: renaming or removing a key needs a migration.
+- The ledger lives on the device. The only data leaving it is the bank synchronisation with Enable Banking (school project, personal use, restricted mode): bank operations transit through Enable Banking and the bank, and the app credentials are never committed. The whole ledger is one JSON document in `shared_preferences` under the key `depenses_state_v1`. Its format is a compatibility contract with installed versions: renaming or removing a key needs a migration.
 - Every user-facing string goes through `flutter_localization` keys, declared in each layer's `presentation/l10n/<layer>_locale.dart`. Amounts and dates are formatted with `intl` through `context.money` and `context.dates`.
 - Colours, text styles and spacing come from the `Theme` layer (`context.tokens`, `AppSpacing`). The two styles (Menthe and Graphite) and four palettes must work in both light and dark mode.
 - Targets: Android (primary), Windows desktop and web.
@@ -34,4 +34,4 @@ No comments, TODOs or ticket references in the code: names carry the meaning. Co
 
 This constitution overrides other practices. Every plan produced by `/speckit-plan` must check its constitution gate against the principles above. Amending the constitution requires a version bump and an explanation of the change in the commit message.
 
-**Version**: 1.0.0 | **Ratified**: 2026-10-05 | **Last Amended**: 2026-10-05
+**Version**: 1.1.0 | **Ratified**: 2026-10-05 | **Last Amended**: 2026-10-05
