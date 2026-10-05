@@ -34,3 +34,11 @@ flutter test test/layers/technical/OpenBanking test/layers/functional/BankSync
 ```
 
 Ils s'appuient sur un `http.Client` factice (`MockClient` de `package:http/testing.dart`) qui rejoue des réponses JSON enregistrées dans `test/layers/technical/OpenBanking/fixtures/`. Aucun appel réseau n'est fait.
+
+## Retour d'expérience Sandbox (2026-10-05)
+
+- **Banque à utiliser :** **Mock ASPSP**, qui ne demande aucun identifiant. `customera` / `12345678` ne sert qu'aux paiements de test.
+- **Données de test :** les comptes, transactions et soldes se créent sur https://enablebanking.com/cp/mock-aspsp. Seuls les **débits** des **90 derniers jours**, posés sur un **compte relié**, sont importés.
+- **Fichier de config :** `config/enable_banking.json` doit être en UTF-8 sans BOM, avec la clé sur une ligne (`\n`). Sinon le compilateur Dart s'arrête. La commande de génération est dans `docs/bank-sync.md`.
+- **Retour d'autorisation :** sur Windows, le retour automatique n'a pas abouti. Le champ « Colle l'adresse de retour » a permis de finaliser la liaison.
+- **Résultat :** liste des banques, liaison, synchronisation (« Déjà à jour » sans données, puis import après l'ajout de transactions sur un compte relié) validés.
